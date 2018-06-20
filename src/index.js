@@ -66,8 +66,8 @@ class Cropper extends React.Component {
   }
 
   static getEventXY = e => ({
-    x: Number(e.clientX || (e.touches && e.touches[0].clientX)),
-    y: Number(e.clientY || (e.touches && e.touches[0].clientY)),
+    x: Number(e.clientX != null ? e.clientX : e.touches && e.touches[0].clientX),
+    y: Number(e.clientY != null ? e.clientY : e.touches && e.touches[0].clientY),
   })
 
   dragStart = e => {
@@ -183,7 +183,12 @@ class Cropper extends React.Component {
       zoom,
     } = this.props
     return (
-      <Container onMouseDown={this.dragStart} onTouchStart={this.dragStart} onWheel={this.onWheel}>
+      <Container
+        onMouseDown={this.dragStart}
+        onTouchStart={this.dragStart}
+        onWheel={this.onWheel}
+        data-testid="container"
+      >
         <Img
           src={this.props.image}
           innerRef={el => (this.image = el)}
@@ -199,6 +204,7 @@ class Cropper extends React.Component {
               width: this.state.cropSize.width,
               height: this.state.cropSize.height,
             }}
+            data-testid="cropper"
           />
         )}
       </Container>
